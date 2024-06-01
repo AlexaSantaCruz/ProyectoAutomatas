@@ -93,6 +93,18 @@ public class Interface {
                 searchTxt();
             }
         });
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startAutomaton();
+            }
+        });
+        buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showCredit();
+            }
+        });
 
         frame.setVisible(true);
     }
@@ -115,6 +127,15 @@ public class Interface {
     }
 
     void showCredit() {
-        /* TODO */
+        JDialog dialog = new JDialog(frame, "Information", true);
+        dialog.setLayout(new FlowLayout());
+        dialog.setSize(300, 150);
+        JLabel label = new JLabel("Equipo: ");
+        JLabel label2 = new JLabel("Alexa Rebeca Santa Cruz Hurtado - 21310419 ");
+        JLabel label3 = new JLabel("Moises David Lozano Bobadilla - ");
+        dialog.add(label);
+        dialog.add(label2);
+        dialog.add(label3);
+        dialog.setVisible(true);
     }
 }
