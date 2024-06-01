@@ -1,37 +1,120 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class Interface{
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Interface {
     JFrame frame = new JFrame("Proyecto Automatas :)");
-    JButton[] buttons=new JButton[2]; /*0 get .txt 
-                                        1 start
-                                        2 information*/
-    JTextArea[] TextAreas = new JTextArea[1]; /*0 putTxt text
-                                                1 to see results*/
+    JButton[] buttons = new JButton[3]; /*
+                                         * 0 get .txt
+                                         * 1 start
+                                         * 2 information
+                                         */
+    JTextArea[] TextAreas = new JTextArea[2]; /*
+                                               * 0 putTxt text
+                                               * 1 to see results
+                                               */
+
     public static void main(String[] args) {
-        Interface interfaz=new Interface();
+        Interface interfaz = new Interface();
         interfaz.setFrame();
-
     }
 
-    void setFrame(){
+    void setFrame() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1400,800);
+        frame.setSize(1400, 800);
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        // Crear el título y añadirlo al frame
+        JLabel titulo = new JLabel("Lexical Analyzer", JLabel.CENTER);
+        titulo.setFont(new Font("Arial", Font.PLAIN, 40));
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        frame.add(titulo, gbc);
+
+        // Inicializar las JTextArea
+        TextAreas[0] = new JTextArea();
+        TextAreas[1] = new JTextArea();
+        TextAreas[1].setEnabled(false);
+
+        // Añadir ScrollPanes a las JTextAreas
+        JScrollPane scrollBarText = new JScrollPane(TextAreas[0]);
+        JScrollPane scrollBarRes = new JScrollPane(TextAreas[1]);
+
+        // Añadir el JTextArea[0] al frame
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        frame.add(scrollBarText, gbc);
+
+        // Añadir el JTextArea[1] al frame
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        frame.add(scrollBarRes, gbc);
+
+        // Inicializar los botones
+        buttons[0] = new JButton("Get .txt");
+        buttons[1] = new JButton("Start");
+        buttons[2] = new JButton("Information");
+
+        // Añadir botones al frame
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        buttonPanel.add(buttons[0]);
+        buttonPanel.add(buttons[1]);
+        buttonPanel.add(buttons[2]);
+
+        // Añadir el panel de botones al frame
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1;
+        gbc.weighty = 0.1;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        frame.add(buttonPanel, gbc);
+
+        // Añadir acción al botón "Get .txt"
+        buttons[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchTxt();
+            }
+        });
+
         frame.setVisible(true);
-
-        JLabel titulo=new JLabel();
-        titulo.setText("Automatas");
     }
 
-    void searchTxt(){
+    void searchTxt() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(file))) {
+                TextAreas[0].read(reader, "File");
+            } catch (java.io.IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    void startAutomaton() {
         /* TODO */
     }
-    
-    void startAutomaton(){
-        /* TODO */
-    }
 
-    void showCredit(){
+    void showCredit() {
         /* TODO */
     }
 }
