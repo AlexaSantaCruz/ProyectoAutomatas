@@ -3,9 +3,11 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Interface {
-    JFrame frame = new JFrame("Proyecto Automatas :)");
+    JFrame frame = new JFrame("Proyecto Autómatas :)");
     JButton[] buttons = new JButton[3]; /*
                                          * 0 get .txt
                                          * 1 start
@@ -15,6 +17,7 @@ public class Interface {
                                                * 0 putTxt text
                                                * 1 to see results
                                                */
+    HashMap<String, Integer> resultMap = new HashMap<>(14, 1);
 
     public static void main(String[] args) {
         Interface interfaz = new Interface();
@@ -123,7 +126,31 @@ public class Interface {
     }
 
     void startAutomaton() {
-        /* TODO */
+        var wordArray = filterWords();
+        var states = new ArrayList<Integer>();
+        wordArray.forEach(word -> {
+            states.add(processWord(word));
+        });
+        processStates(states);
+        setResultMap();
+    }
+
+    ArrayList<String> filterWords() {
+        ArrayList<String> charArray = new ArrayList<>();
+
+        return charArray;
+    }
+
+    int processWord(String word) {
+        return 0;
+    }
+
+    void processStates(ArrayList<Integer> states) {
+
+    }
+
+    void setResultMap() {
+
     }
 
     void showCredit() {
