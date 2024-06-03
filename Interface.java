@@ -132,7 +132,7 @@ public class Interface {
         dialog.setSize(300, 150);
         JLabel label = new JLabel("Equipo: ");
         JLabel label2 = new JLabel("Alexa Rebeca Santa Cruz Hurtado - 21310419 ");
-        JLabel label3 = new JLabel("Moises David Lozano Bobadilla - ");
+        JLabel label3 = new JLabel("Moises David Lozano Bobadilla - 18310167");
         dialog.add(label);
         dialog.add(label2);
         dialog.add(label3);
