@@ -5,19 +5,19 @@ import ResultRow from "./ResultRow";
 export default function Result({ title, content }) {
   const initialData = {
     "Palabras reservadas": 0,
-    "Identificadores": 0,
+    Identificadores: 0,
     "Operadores Relacionales": 0,
     "Operadores Lógicos": 0,
     "Operadores Aritméticos": 0,
-    "Asignaciones": 0,
+    Asignaciones: 0,
     "Números Enteros": 0,
     "Números Decimales": 0,
     "Cadena de caracteres": 0,
     "Comentarios Multilínea": 0,
     "Comentarios de Linea": 0,
-    "Paréntesis": 0,
-    "Llaves": 0,
-    "Errores": 0,
+    Paréntesis: 0,
+    Llaves: 0,
+    Errores: 0,
   };
 
   const [resultMapFinal, setResultMap] = useState(initialData);
@@ -46,19 +46,19 @@ export default function Result({ title, content }) {
 
   const resultMap = {
     "Palabras reservadas": 0,
-    "Identificadores": 0,
+    Identificadores: 0,
     "Operadores Relacionales": 0,
     "Operadores Lógicos": 0,
     "Operadores Aritméticos": 0,
-    "Asignaciones": 0,
+    Asignaciones: 0,
     "Números Enteros": 0,
     "Números Decimales": 0,
     "Cadena de caracteres": 0,
-    "Multilínea": 0,
+    "Comentarios Multilínea": 0,
     "Comentarios de Linea": 0,
-    "Paréntesis": 0,
-    "Llaves": 0,
-    "Errores": 0,
+    Paréntesis: 0,
+    Llaves: 0,
+    Errores: 0,
   };
 
   const processData = () => {
@@ -131,7 +131,7 @@ export default function Result({ title, content }) {
         default:
       }
     });
-  }
+  };
 
   const filterWords = () => {
     const charArray = [];
@@ -152,7 +152,9 @@ export default function Result({ title, content }) {
 
   function isLetter(char) {
     const charCode = char.charCodeAt(0);
-    return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122);
+    return (
+      (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)
+    );
   }
 
   const processWord = (word) => {
@@ -162,87 +164,87 @@ export default function Result({ title, content }) {
       switch (state) {
         case 0:
           if (c == "&") state = 1;
-          if (c == '|') state = 4;
-          if (c == "!") state = 3
-          if (c == '=') state = 5
-          if (c == '/') state = 10
-          if (c == '"') state = 15
-          if (c == '-') state = 18
-          if (!isNaN(c)) state = 19
-          if (isLetter(c)) state = 21
-          if (c == '<' || c == '>') state = 6
-          if (c == '(' || c == ')') state = 8
-          if (c == '{' || c == '}') state = 9
-          if (c == '+' || c == '*' || c == '%') state = 17
+          if (c == "|") state = 4;
+          if (c == "!") state = 3;
+          if (c == "=") state = 5;
+          if (c == "/") state = 10;
+          if (c == '"') state = 15;
+          if (c == "-") state = 18;
+          if (!isNaN(c)) state = 19;
+          if (isLetter(c)) state = 21;
+          if (c == "<" || c == ">") state = 6;
+          if (c == "(" || c == ")") state = 8;
+          if (c == "{" || c == "}") state = 9;
+          if (c == "+" || c == "*" || c == "%") state = 17;
           break;
         case 1:
-          if (c == '&') state = 23
-          else state = 2
+          if (c == "&") state = 23;
+          else state = 2;
           break;
-        case 2: break;
+        case 2:
+          break;
         case 3:
-          if (c == '=') state = 7
-          else state = 2
+          if (c == "=") state = 7;
+          else state = 2;
           break;
         case 4:
-          if (c == '|') state = 23
-          else state = 2
+          if (c == "|") state = 23;
+          else state = 2;
           break;
         case 5:
-          if (c == '=') state = 7
-          else state = 2
+          if (c == "=") state = 7;
+          else state = 2;
           break;
         case 6:
-          if (c == '=') state = 7
-          else state = 2
+          if (c == "=") state = 7;
+          else state = 2;
           break;
         case 7:
-          state = 2
+          state = 2;
           break;
         case 8:
-          state = 2
+          state = 2;
           break;
         case 9:
-          state = 2
+          state = 2;
           break;
         case 10:
-          if (c == '/') state = 11
-          else if (c == '*') state = 12
-          else state = 2
+          if (c == "/") state = 11;
+          else if (c == "*") state = 12;
+          else state = 2;
           break;
         case 11:
           break;
         case 12:
-          if (c == '*') state = 13
+          if (c == "*") state = 13;
           break;
         case 13:
-          if (c == '/') state = 14
-          else state = 12
+          if (c == "/") state = 14;
+          else state = 12;
           break;
         case 14:
-          state = 2
+          state = 2;
           break;
         case 15:
-          if (c == '"') state = 16
+          if (c == '"') state = 16;
           break;
         case 16:
           state = 2;
           break;
         case 17:
-          state = 2
+          state = 2;
           break;
         case 18:
-          if (!isNaN(c)) state = 19
+          if (!isNaN(c)) state = 19;
           break;
         case 19:
-          if (c == '.') state = 20
+          if (c == ".") state = 20;
           break;
         case 20:
-          if (c == '.') state = 2
+          if (c == ".") state = 2;
           break;
         case 21:
-          if (!isLetter(c) || !c == '_')
-            state = 2
+          if (!isLetter(c) || !c == "_") state = 2;
           break;
         case 23:
           state = 2;
@@ -251,10 +253,8 @@ export default function Result({ title, content }) {
       }
     });
     //Check if the word is reserved
-    if (palabrasReservadas.includes(word))
-      state = 22;
-    if (state == 7)
-      console.log(word)
+    if (palabrasReservadas.includes(word)) state = 22;
+    if (state == 7) console.log(word);
     return state;
   };
 
@@ -267,29 +267,17 @@ export default function Result({ title, content }) {
           role="group"
           aria-label="Basic mixed styles example"
         >
-          <button
-            type="button"
-            onClick={handleReload}
-            class="btn btn-danger"
-          >
+          <button type="button" onClick={handleReload} class="btn btn-danger">
             Reset
           </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            onClick={processData}
-          >
+          <button type="button" class="btn btn-success" onClick={processData}>
             Start
           </button>
         </div>
 
         <div className=" transbox">
           {Object.entries(resultMapFinal).map(([label, value], index) => (
-            <ResultRow
-              key={index}
-              label={label}
-              value={value}
-            />
+            <ResultRow key={index} label={label} value={value} />
           ))}
         </div>
       </div>
