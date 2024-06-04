@@ -151,6 +151,11 @@ public class Interface {
     }
 
     void searchTxt() {
+        if (!TextAreas[0].getText().isEmpty() && JOptionPane.showConfirmDialog(
+                frame,
+                "The text area is not empty, do you want to override the content?") != 0) {
+            return;
+        }
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
