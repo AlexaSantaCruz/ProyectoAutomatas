@@ -310,18 +310,144 @@ public class Automata {
                     } else if (character.equals("/")) {
                         state = 21;
                     } else if (isLetter(character)) {
-                        state = 22;
+                        state = 26;
                     } else {
                         state = 999;
                     }
                     break;
                 case 1:
-
+                    if (character.equals("\"")) {
+                        state = 2;
+                    }
                     break;
                 case 2:
-
+                    state = 999;
                     break;
-
+                case 3:
+                    if (character.equals("+")) {
+                        state = 4;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 4:
+                    state = 999;
+                    break;
+                case 5:
+                    if (character.equals("-")) {
+                        state = 6;
+                    } else if (!Double.isNaN(parseSafeDouble(character))) {
+                        state = 10;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 6:
+                    state = 999;
+                    break;
+                case 8:
+                    if (!Double.isNaN(parseSafeDouble(character))) {
+                        state = 9;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 9:
+                    if (Double.isNaN(parseSafeDouble(character))) {
+                        state = 999;
+                    }
+                    break;
+                case 10:
+                    if (!Double.isNaN(parseSafeDouble(character))) {
+                        state = 10;
+                    } else if (character.equals(".")) {
+                        state = 8;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 11:
+                    state = 999;
+                    break;
+                case 12:
+                    state = 999;
+                    break;
+                case 13:
+                    state = 999;
+                    break;
+                case 14:
+                    if (character.equals("=")) {
+                        state = 15;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 15:
+                    state = 999;
+                    break;
+                case 16:
+                    if (character.equals("=")) {
+                        state = 15;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 17:
+                    if (character.equals("=")) {
+                        state = 15;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 18:
+                    if (character.equals("&")) {
+                        state = 19;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 19:
+                    state = 999;
+                    break;
+                case 20:
+                    if (character.equals("|")) {
+                        state = 19;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 21:
+                    if (character.equals("/")) {
+                        state = 22;
+                    } else if (character.equals("*")) {
+                        state = 23;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 22:
+                    state = 22;
+                    break;
+                case 23:
+                    if (character.equals("*")) {
+                        state = 24;
+                    }
+                    break;
+                case 24:
+                    if (character.equals("/")) {
+                        state = 25;
+                    } else {
+                        state = 23;
+                    }
+                    break;
+                case 25:
+                    state = 999;
+                    break;
+                case 26:
+                    if (!isLetter(character) || Double.isNaN(parseSafeDouble(character)) || !character.equals("_")) {
+                        state = 999;
+                    }
+                    break;
                 default:
                     break;
             }
