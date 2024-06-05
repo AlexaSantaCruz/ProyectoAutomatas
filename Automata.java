@@ -290,6 +290,79 @@ public class Automata {
                         state = 999;
                     }
                     break;
+                case 3:
+                    if (character.contains("=")) {
+                        state = 6;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 4:
+                    if (character.contains("=")) {
+                        state = 6;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 5:
+                    if (character.contains("=")) {
+                        state = 6;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 6:
+                    state = 999;
+                    break;
+                case 7:
+                    if (character.contains("&")) {
+                        state = 8;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 8:
+                    state = 999;
+                    break;
+                case 9:
+                    if (character.contains("|")) {
+                        state = 10;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 10:
+                    state = 999;
+                    break;
+                case 11:
+                    if (character.contains("+")) {
+                        state = 12;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 12:
+                    state = 999;
+                    break;
+                case 13:
+                    if (character.contains("-")) {
+                        state = 14;
+                    } else if (!Double.isNaN(parseSafeDouble(character))) {
+                        state = 15;
+                    } else {
+                        state = 999;
+                    }
+                    break;
+                case 14:
+                    state = 999;
+                    break;
+                case 15:
+                    if (character.contains(".")) {
+                        state = 16;
+                    } else if (Double.isNaN(parseSafeDouble(character))) {
+                        state = 999;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -307,31 +380,44 @@ public class Automata {
         var state = 999;
         if (isLetter(character)) {
             state = 1;
-        } else if (character == "|") {
-            state = 4;
-        } else if (character == "!") {
+        } else if (character.equals("<") || character.equals(">")) {
             state = 3;
-        } else if (character == "=") {
+        } else if (character.equals("=")) {
+            state = 4;
+        } else if (character.equals("!")) {
             state = 5;
-        } else if (character == "/") {
-            state = 10;
-        } else if (character == "\"") {
-            state = 15;
-        } else if (character == "-") {
-            state = 18;
-        } else if (!Double.isNaN(parseSafeDouble(character))) {
-            state = 19;
-        } else if (isLetter(character)) {
-            state = 21;
-        } else if (character == "<" || character == ">") {
-            state = 6;
-        } else if (character == "(" || character == ")") {
-            state = 8;
-        } else if (character == "{" || character == "}") {
+        } else if (character.equals("&")) {
+            state = 7;
+        } else if (character.equals("|")) {
             state = 9;
-        } else if (character == "+" || character == "*" || character == "%") {
-            state = 17;
+        } else if (character.equals("+")) {
+            state = 11;
+        } else if (character.equals("-")) {
+            state = 13;
         }
+        // } else if (character == "|") {
+        // state = 4;
+        // } else if (character == "!") {
+        // state = 3;
+        // } else if (character == "=") {
+        // state = 5;
+        // } else if (character == "/") {
+        // state = 10;
+        // } else if (character == "\"") {
+        // state = 15;
+        // } else if (character == "-") {
+        // state = 18;
+        // } else if (!Double.isNaN(parseSafeDouble(character))) {
+        // state = 19;
+        // } else if (isLetter(character)) {
+        // state = 21;
+        // } else if (character == "(" || character == ")") {
+        // state = 8;
+        // } else if (character == "{" || character == "}") {
+        // state = 9;
+        // } else if (character == "+" || character == "*" || character == "%") {
+        // state = 17;
+        // }
         return state;
     }
 
@@ -347,7 +433,33 @@ public class Automata {
                 case 2:
                     reservedKeywords++;
                     break;
-
+                case 3:
+                    relationalOperators++;
+                    break;
+                case 4:
+                    assignations++;
+                    break;
+                case 5:
+                    logicalOperators++;
+                    break;
+                case 6:
+                    relationalOperators++;
+                    break;
+                case 8:
+                    logicalOperators++;
+                    break;
+                case 10:
+                    logicalOperators++;
+                    break;
+                case 11:
+                    arithmeticalOperators++;
+                    break;
+                case 12:
+                    increments++;
+                    break;
+                case 13:
+                    arithmeticalOperators++;
+                    break;
                 default:
                     errors++;
                     break;
