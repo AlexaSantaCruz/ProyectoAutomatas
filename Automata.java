@@ -222,7 +222,7 @@ public class Automata {
 
     /**
      * Return the formatted result of all counters.
-     * Must be called before <code>computeAutomata</code> otherwise, all counters
+     * Must be called after <code>computeAutomata</code> otherwise, all counters
      * will be set on zero.
      * If <code>resetAutomata</code> is called before this function, all counters
      * will be zero.
@@ -283,141 +283,59 @@ public class Automata {
         for (String character : characterArray) {
             switch (state) {
                 case 0:
-                    state = processQ0(character);
+                    if (character.equals("\"")) {
+                        state = 1;
+                    } else if (character.equals("+")) {
+                        state = 3;
+                    } else if (character.equals("-")) {
+                        state = 5;
+                    } else if (!Double.isNaN(parseSafeDouble(character))) {
+                        state = 10;
+                    } else if (character.equals("*") || character.equals("%")) {
+                        state = 11;
+                    } else if (character.equals("{") || character.equals("}")) {
+                        state = 12;
+                    } else if (character.equals("(") || character.equals(")")) {
+                        state = 13;
+                    } else if (character.equals("=")) {
+                        state = 16;
+                    } else if (character.equals("<") || character.equals(">")) {
+                        state = 14;
+                    } else if (character.equals("!")) {
+                        state = 17;
+                    } else if (character.equals("&")) {
+                        state = 18;
+                    } else if (character.equals("|")) {
+                        state = 20;
+                    } else if (character.equals("/")) {
+                        state = 21;
+                    } else if (isLetter(character)) {
+                        state = 22;
+                    } else {
+                        state = 999;
+                    }
                     break;
                 case 1:
-                    if (!isLetter(character) && character != "_") {
-                        state = 999;
-                    }
+
                     break;
-                case 3:
-                    if (character.contains("=")) {
-                        state = 6;
-                    } else {
-                        state = 999;
-                    }
+                case 2:
+
                     break;
-                case 4:
-                    if (character.contains("=")) {
-                        state = 6;
-                    } else {
-                        state = 999;
-                    }
-                    break;
-                case 5:
-                    if (character.contains("=")) {
-                        state = 6;
-                    } else {
-                        state = 999;
-                    }
-                    break;
-                case 6:
-                    state = 999;
-                    break;
-                case 7:
-                    if (character.contains("&")) {
-                        state = 8;
-                    } else {
-                        state = 999;
-                    }
-                    break;
-                case 8:
-                    state = 999;
-                    break;
-                case 9:
-                    if (character.contains("|")) {
-                        state = 10;
-                    } else {
-                        state = 999;
-                    }
-                    break;
-                case 10:
-                    state = 999;
-                    break;
-                case 11:
-                    if (character.contains("+")) {
-                        state = 12;
-                    } else {
-                        state = 999;
-                    }
-                    break;
-                case 12:
-                    state = 999;
-                    break;
-                case 13:
-                    if (character.contains("-")) {
-                        state = 14;
-                    } else if (!Double.isNaN(parseSafeDouble(character))) {
-                        state = 15;
-                    } else {
-                        state = 999;
-                    }
-                    break;
-                case 14:
-                    state = 999;
-                    break;
-                case 15:
-                    if (character.contains(".")) {
-                        state = 16;
-                    } else if (Double.isNaN(parseSafeDouble(character))) {
-                        state = 999;
-                    }
-                    break;
+
                 default:
                     break;
+            }
+            if (state == 999) {
+                // No acceptation. Exit the loop
+                break;
             }
         }
 
         // If the detected case is 1. Check if its reserved keyword
-        if (state == 1 && this.reservedWords.contains(word)) {
-            state = 2;
+        if (state == 26 && this.reservedWords.contains(word)) {
+            state = 27;
         }
 
-        return state;
-    }
-
-    private int processQ0(String character) {
-        var state = 999;
-        if (isLetter(character)) {
-            state = 1;
-        } else if (character.equals("<") || character.equals(">")) {
-            state = 3;
-        } else if (character.equals("=")) {
-            state = 4;
-        } else if (character.equals("!")) {
-            state = 5;
-        } else if (character.equals("&")) {
-            state = 7;
-        } else if (character.equals("|")) {
-            state = 9;
-        } else if (character.equals("+")) {
-            state = 11;
-        } else if (character.equals("-")) {
-            state = 13;
-        }
-        // } else if (character == "|") {
-        // state = 4;
-        // } else if (character == "!") {
-        // state = 3;
-        // } else if (character == "=") {
-        // state = 5;
-        // } else if (character == "/") {
-        // state = 10;
-        // } else if (character == "\"") {
-        // state = 15;
-        // } else if (character == "-") {
-        // state = 18;
-        // } else if (!Double.isNaN(parseSafeDouble(character))) {
-        // state = 19;
-        // } else if (isLetter(character)) {
-        // state = 21;
-        // } else if (character == "(" || character == ")") {
-        // state = 8;
-        // } else if (character == "{" || character == "}") {
-        // state = 9;
-        // } else if (character == "+" || character == "*" || character == "%") {
-        // state = 17;
-        // }
         return state;
     }
 
@@ -427,38 +345,65 @@ public class Automata {
     private void processStates() {
         for (Integer state : states) {
             switch (state) {
-                case 1:
-                    identifiers++;
-                    break;
                 case 2:
-                    reservedKeywords++;
+                    this.strings++;
                     break;
                 case 3:
-                    relationalOperators++;
+                    this.arithmeticalOperators++;
                     break;
                 case 4:
-                    assignations++;
+                    this.increments++;
                     break;
                 case 5:
-                    logicalOperators++;
+                    this.arithmeticalOperators++;
                     break;
                 case 6:
-                    relationalOperators++;
+                    this.decrements++;
                     break;
-                case 8:
-                    logicalOperators++;
+                case 9:
+                    this.decimalNumbers++;
                     break;
                 case 10:
-                    logicalOperators++;
+                    this.integerNumbers++;
                     break;
                 case 11:
-                    arithmeticalOperators++;
+                    this.arithmeticalOperators++;
                     break;
                 case 12:
-                    increments++;
+                    this.curlyBraces++;
                     break;
                 case 13:
-                    arithmeticalOperators++;
+                    this.parenthesis++;
+                    break;
+                case 14:
+                    this.relationalOperators++;
+                    break;
+                case 15:
+                    this.relationalOperators++;
+                    break;
+                case 16:
+                    this.assignations++;
+                    break;
+                case 17:
+                    this.logicalOperators++;
+                    break;
+                case 19:
+                    this.logicalOperators++;
+                    break;
+                case 21:
+                    this.arithmeticalOperators++;
+                    break;
+                case 22:
+                    this.inlineComments++;
+                    break;
+                case 25:
+                    this.comments++;
+                    break;
+                case 26:
+                    this.identifiers++;
+                    break;
+                case 27:
+                    this.reservedKeywords++;
                     break;
                 default:
                     errors++;
