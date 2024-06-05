@@ -5,16 +5,16 @@ public class Automata {
 
     /** The text to evaluate */
     private String text;
-
     /** The text splitted character by character */
     private String[] splittedText;
     /** List of all the words of the automata */
-    private ArrayList<String> wordArray;
+    private ArrayList<String> wordArray = new ArrayList<>();
     /** The list of all reserved words */
-    private ArrayList<String> reservedWords;
+    private ArrayList<String> reservedWords = new ArrayList<>();
     /** The list of all symbols considered "whitespace" */
-    private ArrayList<String> whitespaceChars;
-
+    private ArrayList<String> whitespaceChars = new ArrayList<>();
+    /** All the states that are being computed */
+    private ArrayList<Integer> states = new ArrayList<>();
     // #endregion
 
     // #region Counters
@@ -131,11 +131,6 @@ public class Automata {
     private int errors = 0;
     // #endregion
 
-    // #region Constants
-    private final int Q0 = 0;
-    private final int Q13 = 13;
-    // #endregion
-
     // #region Public methods
 
     /**
@@ -143,6 +138,7 @@ public class Automata {
      */
     public Automata(String text) {
         // Initialize all reserved words.
+
         this.reservedWords.add("if");
         this.reservedWords.add("else");
         this.reservedWords.add("switch");
@@ -168,10 +164,16 @@ public class Automata {
     }
 
     /**
-     * Start the execution of the automata. Letter by letter.
+     * Start the execution of the automata. Word by word and letter by letter.
      */
     public Automata computeAutomata() {
         prepareAutomata();
+
+        wordArray.forEach(word -> {
+            states.add(processWord(word));
+        });
+
+        processStates();
 
         return this;
     }
@@ -210,6 +212,10 @@ public class Automata {
         this.parenthesis = 0;
         this.curlyBraces = 0;
         this.errors = 0;
+
+        this.states.clear();
+        this.wordArray.clear();
+        this.splittedText = new String[] {};
 
         return this;
     }
@@ -261,6 +267,92 @@ public class Automata {
             }
         }
 
+    }
+
+    /**
+     * Process the word splitting all the characters and determine the final state.
+     * 
+     * @param word The word to process
+     * @return The state of the word processed
+     */
+    private int processWord(String word) {
+        int state = 0;
+
+        var characterArray = word.split("");
+
+        for (String character : characterArray) {
+            switch (state) {
+                case 0:
+                    state = processQ0(character);
+                    break;
+                case 1:
+                    if (!isLetter(character) && character != "_") {
+                        state = 999;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // If the detected case is 1. Check if its reserved keyword
+        if (state == 1 && this.reservedWords.contains(word)) {
+            state = 2;
+        }
+
+        return state;
+    }
+
+    private int processQ0(String character) {
+        var state = 999;
+        if (isLetter(character)) {
+            state = 1;
+        } else if (character == "|") {
+            state = 4;
+        } else if (character == "!") {
+            state = 3;
+        } else if (character == "=") {
+            state = 5;
+        } else if (character == "/") {
+            state = 10;
+        } else if (character == "\"") {
+            state = 15;
+        } else if (character == "-") {
+            state = 18;
+        } else if (!Double.isNaN(parseSafeDouble(character))) {
+            state = 19;
+        } else if (isLetter(character)) {
+            state = 21;
+        } else if (character == "<" || character == ">") {
+            state = 6;
+        } else if (character == "(" || character == ")") {
+            state = 8;
+        } else if (character == "{" || character == "}") {
+            state = 9;
+        } else if (character == "+" || character == "*" || character == "%") {
+            state = 17;
+        }
+        return state;
+    }
+
+    /**
+     * Start the count of all saved states of all the evaluations of the automata
+     */
+    private void processStates() {
+        for (Integer state : states) {
+            switch (state) {
+                case 1:
+                    identifiers++;
+                    break;
+                case 2:
+                    reservedKeywords++;
+                    break;
+
+                default:
+                    errors++;
+                    break;
+            }
+        }
     }
 
     /**

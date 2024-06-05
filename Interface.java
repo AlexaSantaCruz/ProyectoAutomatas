@@ -169,13 +169,10 @@ public class Interface {
     }
 
     void startAutomaton() {
-        var wordArray = filterWords();
-        var states = new ArrayList<Integer>();
-        wordArray.forEach(word -> {
-            states.add(processWord(word));
-        });
-        processStates(states);
-        setResultMap();
+        var automata = new Automata(TextAreas[0].getText());
+        automata.resetAutomata();
+        automata.computeAutomata();
+        TextAreas[1].setText(automata.formatOutput());
     }
 
     ArrayList<String> filterWords() {
