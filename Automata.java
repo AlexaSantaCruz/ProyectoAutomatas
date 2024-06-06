@@ -162,6 +162,9 @@ public class Automata {
         this.whitespaceChars.add("");
 
         this.text = text;
+        if (this.text.isEmpty() || !this.whitespaceChars.contains(String.valueOf(text.charAt(text.length() - 1)))) {
+            this.text = text + " ";
+        }
     }
 
     /**
