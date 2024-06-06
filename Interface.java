@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Interface {
-    JFrame frame = new JFrame("Proyecto Automatas :)");
+public class Interface extends JFrame {
+
     JButton[] buttons = new JButton[3]; /*
                                          * 0 get .txt
                                          * 1 start
@@ -16,15 +16,11 @@ public class Interface {
                                                * 1 to see results
                                                */
 
-    public static void main(String[] args) {
-        Interface interfaz = new Interface();
-        interfaz.setFrame();
-    }
-
-    void setFrame() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1400, 800);
-        frame.setLayout(new GridBagLayout());
+    public Interface() {
+        setTitle("Proyecto Autómatas :)");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1400, 800);
+        this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         // Crear el título y añadirlo al frame
@@ -36,12 +32,11 @@ public class Interface {
         gbc.gridwidth = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
-        frame.add(titulo, gbc);
+        this.add(titulo, gbc);
 
         // Inicializar las JTextArea
         TextAreas[0] = new JTextArea();
         TextAreas[1] = new JTextArea();
-        TextAreas[1].setEnabled(false);
 
         // Añadir ScrollPanes a las JTextAreas
         JScrollPane scrollBarText = new JScrollPane(TextAreas[0]);
@@ -54,7 +49,7 @@ public class Interface {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        frame.add(scrollBarText, gbc);
+        this.add(scrollBarText, gbc);
 
         // Añadir el JTextArea[1] al frame
         gbc.gridx = 2;
@@ -63,7 +58,7 @@ public class Interface {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        frame.add(scrollBarRes, gbc);
+        this.add(scrollBarRes, gbc);
 
         // Inicializar los botones
         buttons[0] = new JButton("Get .txt");
@@ -84,7 +79,7 @@ public class Interface {
         gbc.weighty = 0.1;
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        frame.add(buttonPanel, gbc);
+        this.add(buttonPanel, gbc);
 
         // Añadir acción al botón "Get .txt"
         buttons[0].addActionListener(new ActionListener() {
@@ -105,13 +100,21 @@ public class Interface {
                 showCredit();
             }
         });
+    }
 
-        frame.setVisible(true);
+    public static void main(String[] args) {
+        Interface interfaz = new Interface();
+        interfaz.setVisible(true);
     }
 
     void searchTxt() {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(frame);
+        if (!TextAreas[0].getText().isEmpty() && JOptionPane.showConfirmDialog(
+                this,
+                "The text area is not empty, do you want to override the content?") != 0) {
+            return;
+        }
+        JFileChooser fileChooser = new JFileChooser(".");
+        int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fileChooser.getSelectedFile();
             try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(file))) {
@@ -123,16 +126,19 @@ public class Interface {
     }
 
     void startAutomaton() {
-        /* TODO */
+        var automata = new Automata(TextAreas[0].getText());
+        automata.resetAutomata();
+        automata.computeAutomata();
+        TextAreas[1].setText(automata.formatOutput());
     }
 
     void showCredit() {
-        JDialog dialog = new JDialog(frame, "Information", true);
+        JDialog dialog = new JDialog(this, "Information", true);
         dialog.setLayout(new FlowLayout());
         dialog.setSize(300, 150);
         JLabel label = new JLabel("Equipo: ");
-        JLabel label2 = new JLabel("Alexa Rebeca Santa Cruz Hurtado - 21310419 ");
-        JLabel label3 = new JLabel("Moises David Lozano Bobadilla - ");
+        JLabel label2 = new JLabel("Alexa Rebeca Santa Cruz Hurtado - 21310419");
+        JLabel label3 = new JLabel("Moises David Lozano Bobadilla - 18310167");
         dialog.add(label);
         dialog.add(label2);
         dialog.add(label3);
