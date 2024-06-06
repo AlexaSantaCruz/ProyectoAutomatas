@@ -113,7 +113,7 @@ public class Interface extends JFrame {
                 "The text area is not empty, do you want to override the content?") != 0) {
             return;
         }
-        JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser(".");
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fileChooser.getSelectedFile();

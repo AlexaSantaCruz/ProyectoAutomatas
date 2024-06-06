@@ -140,6 +140,7 @@ public class Automata {
         // Initialize all reserved words.
 
         this.reservedWords.add("if");
+        this.reservedWords.add("main");
         this.reservedWords.add("else");
         this.reservedWords.add("switch");
         this.reservedWords.add("case");
@@ -444,7 +445,8 @@ public class Automata {
                     state = 999;
                     break;
                 case 26:
-                    if (!isLetter(character) || Double.isNaN(parseSafeDouble(character)) || !character.equals("_")) {
+                    if (!(isLetter(character) || character.contains("_")
+                            || !Double.isNaN(parseSafeDouble(character)))) {
                         state = 999;
                     }
                     break;
